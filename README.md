@@ -8,4 +8,4 @@ yarn install
 # Run Project
 ```
 yarn dev
-```# CI-CD-node-tsoa
+```# yarn dev
