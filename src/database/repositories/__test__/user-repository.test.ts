@@ -30,7 +30,7 @@ describe('UserRepository Integration Tests', () => {
   beforeEach(async () => {
     await User.deleteMany();
     const insertedUsers = await User.insertMany(mockUsers);
-    mockUsers = insertedUsers.map(user => user.toObject()); // Update mockUsers with actual inserted users
+    mockUsers = insertedUsers.map(user => user.toObject()); 
   });
 
   afterAll(async () => {
