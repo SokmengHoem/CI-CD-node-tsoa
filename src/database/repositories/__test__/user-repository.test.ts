@@ -20,10 +20,10 @@ describe('UserRepository Integration Tests', () => {
   beforeAll(async () => {
     try {
       await mongoose.connect(configs.mongodbUrl);
-      console.log('Connected to MongoDB successfully'); 
+      console.log('Connected to MongoDB successfully');
     } catch (error) {
       console.error('Error connecting to MongoDB:', error);
-      throw error;  // Re-throw to propagate the error
+      throw error;
     }
   });
 
@@ -46,60 +46,85 @@ describe('UserRepository Integration Tests', () => {
     const minAge = 20;
     const maxAge = 40;
 
-    const result = await UserRepository.getAllUsers(page, limit, filter, sort, minAge, maxAge);
-    console.log(result);
+    try {
+      const result = await UserRepository.getAllUsers(page, limit, filter, sort, minAge, maxAge);
+      console.log(result);
 
-    expect(result.length).toBe(mockUsers.length);
-    expect(result).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({ name: 'John Doe' }),
-        expect.objectContaining({ name: 'Dara' }),
-      ])
-    );
+      expect(result.length).toBe(mockUsers.length);
+      expect(result).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({ name: 'John Doe' }),
+          expect.objectContaining({ name: 'Dara' }),
+        ])
+      );
+    } catch (error) {
+      console.error('Error during getAllUsers test:', error);
+      throw error;
+    }
   }, 20000);
 
   test('getUserById should return the user with the given ID', async () => {
     const userId = mockUsers[0]._id;
 
-    const result = await UserRepository.getUserById(userId!.toString());
+    try {
+      const result = await UserRepository.getUserById(userId!.toString());
 
-    expect(result).toBeTruthy();
-    expect(result).toMatchObject({ name: 'John Doe', email: 'john@example.com', age: 30 });
+      expect(result).toBeTruthy();
+      expect(result).toMatchObject({ name: 'John Doe', email: 'john@example.com', age: 30 });
+    } catch (error) {
+      console.error('Error during getUserById test:', error);
+      throw error;
+    }
   }, 20000);
 
   test('createUser should create a new user', async () => {
     const newUser: UserType = { name: 'Sam Smith', email: 'sam@example.com', age: 20 };
 
-    const result = await UserRepository.createUser(newUser);
+    try {
+      const result = await UserRepository.createUser(newUser);
 
-    expect(result).toBeTruthy();
-    expect(result).toMatchObject({ ...newUser, _id: expect.any(mongoose.Types.ObjectId) });
+      expect(result).toBeTruthy();
+      expect(result).toMatchObject({ ...newUser, _id: expect.any(mongoose.Types.ObjectId) });
 
-    const createdUser = await User.findById(result._id);
-    expect(createdUser).toBeTruthy();
-    expect(createdUser).toMatchObject(newUser);
+      const createdUser = await User.findById(result._id);
+      expect(createdUser).toBeTruthy();
+      expect(createdUser).toMatchObject(newUser);
+    } catch (error) {
+      console.error('Error during createUser test:', error);
+      throw error;
+    }
   }, 20000);
 
   test('updateUser should update and return the user', async () => {
     const userId = mockUsers[0]._id;
     const updatedData = { name: 'John Updated' };
 
-    const result = await UserRepository.updateUser(userId!.toString(), updatedData);
+    try {
+      const result = await UserRepository.updateUser(userId!.toString(), updatedData);
 
-    expect(result).toBeTruthy();
-    expect(result).toMatchObject({ ...mockUsers[0], ...updatedData });
+      expect(result).toBeTruthy();
+      expect(result).toMatchObject({ ...mockUsers[0], ...updatedData });
 
-    const updatedUser = await User.findById(userId);
-    expect(updatedUser).toBeTruthy();
-    expect(updatedUser).toMatchObject({ ...mockUsers[0], ...updatedData });
+      const updatedUser = await User.findById(userId);
+      expect(updatedUser).toBeTruthy();
+      expect(updatedUser).toMatchObject({ ...mockUsers[0], ...updatedData });
+    } catch (error) {
+      console.error('Error during updateUser test:', error);
+      throw error;
+    }
   }, 20000);
 
   test('deleteUser should delete the user', async () => {
     const userId = mockUsers[0]._id;
 
-    await UserRepository.deleteUser(userId!.toString());
+    try {
+      await UserRepository.deleteUser(userId!.toString());
 
-    const deletedUser = await User.findById(userId);
-    expect(deletedUser).toBeNull();
+      const deletedUser = await User.findById(userId);
+      expect(deletedUser).toBeNull();
+    } catch (error) {
+      console.error('Error during deleteUser test:', error);
+      throw error;
+    }
   }, 20000);
 });

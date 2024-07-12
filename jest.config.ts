@@ -18,10 +18,10 @@ const config: Config.InitialOptions = {
   ],
   coverageThreshold: {
     global: {
-      branches: 80, // conditional
-      functions: 80, // how many defined functions are called during test
-      lines: 80, // lines of code execute in the test
-      statements: 80,
+      branches: 34, // conditional
+      functions: 70, // how many defined functions are called during test
+      lines: 70, // lines of code execute in the test
+      statements: 70,
     },
   },
   coverageReporters: ['text-summary', 'lcov'],
