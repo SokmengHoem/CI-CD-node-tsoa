@@ -15,6 +15,7 @@ export function errorHandler(err: any, req: Request, res: Response, next: NextFu
       message: err.message,
     });
   } else {
+    // Pass non-error objects to the next middleware
     next(err);
   }
 }

@@ -18,7 +18,7 @@ const config: Config.InitialOptions = {
   ],
   coverageThreshold: {
     global: {
-      branches: 34, // conditional
+      branches: 50, // conditional
       functions: 70, // how many defined functions are called during test
       lines: 70, // lines of code execute in the test
       statements: 70,
