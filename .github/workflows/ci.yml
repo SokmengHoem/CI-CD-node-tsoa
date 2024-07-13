@@ -37,8 +37,15 @@ jobs:
       - name: Run tests
         env:
           NODE_ENV: test
+        run: yarn test --silent --maxWorkers=2
+
+      - name: Generate coverage report
+        env:
+          NODE_ENV: test
+        run: yarn test --coverage --silent --maxWorkers=2
+
+      - name: Check coverage
         run: |
-          yarn test --coverage --silent --maxWorkers=2
           coverage=$(yarn test --coverage --silent --json | jq '.totalCoverage')
           if [ $coverage -lt 50 ]; then
             echo "Coverage threshold not met: $coverage%"
