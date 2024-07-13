@@ -2,9 +2,11 @@ name: CI
 
 on:
   push:
-    branches: main
+    branches:
+      - main
   pull_request:
-    branches: main 
+    branches:
+      - main
 
 jobs:
   build:
@@ -21,12 +23,12 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3  
+        uses: actions/checkout@v3
 
       - name: Set up Node.js
-        uses: actions/setup-node@v3  
+        uses: actions/setup-node@v2
         with:
-          node-version: '20' 
+          node-version: '16'  
 
       - name: Install dependencies
         run: yarn install
@@ -47,7 +49,7 @@ jobs:
       - name: Check coverage
         run: |
           coverage=$(yarn test --coverage --silent --json | jq '.totalCoverage')
-          if [ $coverage -lt 50 ]; then
+          if [ $(echo "$coverage < 50" | bc) -eq 1 ]; then
             echo "Coverage threshold not met: $coverage%"
             exit 1
           fi
