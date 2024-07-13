@@ -1,4 +1,3 @@
-// src/middlewares/errorHandler.ts
 import { Request, Response, NextFunction } from 'express';
 import { ValidateError } from 'tsoa';
 
@@ -10,7 +9,7 @@ export function errorHandler(err: any, req: Request, res: Response, next: NextFu
       details: err?.fields,
     });
   } else if (err instanceof Error) {
-    console.log(`Error: ${err.message}`);
+    console.error(`Error: ${err.message}`);
     res.status(500).json({
       message: err.message,
     });
