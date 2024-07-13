@@ -10,7 +10,7 @@ export function errorHandler(err: any, req: Request, res: Response, next: NextFu
       details: err?.fields,
     });
   } else if (err instanceof Error) {
-    console.error(`Error: ${err.message}`);
+    console.log(`Error: ${err.message}`);
     res.status(500).json({
       message: err.message,
     });
