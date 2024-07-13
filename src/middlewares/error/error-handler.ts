@@ -4,7 +4,7 @@ import { ValidateError } from 'tsoa';
 
 export function errorHandler(err: any, req: Request, res: Response, next: NextFunction): void {
   if (err instanceof ValidateError) {
-    console.warn(`Caught Validation Error for ${req.path}:`, err.fields);
+    console.log(`Caught Validation Error for ${req.path}:`, err.fields);
     res.status(422).json({
       message: 'Validation Failed',
       details: err?.fields,
