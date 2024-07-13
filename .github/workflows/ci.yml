@@ -22,6 +22,9 @@ jobs:
       MONGODB_URL: ${{ secrets.MONGODB_URL }}
 
     steps:
+      - name: Clear yarn cache
+        run: yarn cache clean --force
+
       - name: Checkout code
         uses: actions/checkout@v3
 
