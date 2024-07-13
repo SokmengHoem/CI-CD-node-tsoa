@@ -22,9 +22,6 @@ jobs:
       MONGODB_URL: ${{ secrets.MONGODB_URL }}
 
     steps:
-      - name: Clear yarn cache
-        run: yarn cache clean --force
-
       - name: Checkout code
         uses: actions/checkout@v3
 
@@ -41,3 +38,17 @@ jobs:
 
       - name: Run tests
         run: yarn test
+
+  before-merge:
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true
+
+    steps:
+      - name: Check coverage
+        run: |
+          coverage=$(yarn test --coverage --silent --json | jq '.totalCoverage')
+          if [ $(echo "$coverage < 50" | bc) -eq 1 ]; then
+            echo "Coverage threshold not met: $coverage%"
+            exit 1
+          fi
